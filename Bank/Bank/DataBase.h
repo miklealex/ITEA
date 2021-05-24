@@ -62,14 +62,14 @@ public:
         //TODO: look for transaction with the biggest amount of money (output all of them if several)
     }
 
-    bool outputTransactionHistoryForClient(std::string clientId)
+    bool outputTransactionHistoryForClient(std::string clientId)//Tymoshenko Viktor
     {
         auto history = HistoryManager::loadHistoryForClient(clientId);
         //TODO: output transaction for client if possible here
         return true;
     }
 
-    bool outputTransactionsForSpecifiedDateForClient(std::string clientId, std::string date)
+    bool outputTransactionsForSpecifiedDateForClient(std::string clientId, std::string date)//Tymoshenko Viktor
     {
         //TODO: output all transactions of client for specified date
         return true;
