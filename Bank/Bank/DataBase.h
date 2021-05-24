@@ -85,6 +85,16 @@ public:
         //TODO: output total amount of clients in bank
     }
 
+    void outputTheOldestTransaction()
+    {
+        //TODO: output the oldest transaction
+    }
+
+    void outputClientsWithTheBiggestAmountOfTransactionsPerDay()
+    {
+        //TODO: output clients with the biggest amount of transactions per day
+    }
+
 private:
 
     void loadDataBase()
