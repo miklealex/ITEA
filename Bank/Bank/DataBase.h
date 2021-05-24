@@ -4,6 +4,8 @@
 #include "HistoryManager.h"
 #include "Client.h"
 #include <map>
+#include <iostream>
+
 
 class DataBase
 {
@@ -65,14 +67,39 @@ public:
     bool outputTransactionHistoryForClient(std::string clientId)//Tymoshenko Viktor
     {
         auto history = HistoryManager::loadHistoryForClient(clientId);
+       
+        for (auto it = history.begin(); it != history.end(); ++it)
+        {
+            std::cout << "Type of operation " << it->type << std::endl;
+            std::cout << "Date of operation " << it->date << std::endl;
+            std::cout << "Amount " << it->amount << std::endl;
+        }
         //TODO: output transaction for client if possible here
         return true;
+        
     }
 
     bool outputTransactionsForSpecifiedDateForClient(std::string clientId, std::string date)//Tymoshenko Viktor
     {
+        auto history = HistoryManager::loadHistoryForClient(clientId);
+
+        for (auto it = history.begin(); it != history.end(); ++it)
+        {
+            if (it->date==date)
+            {
+                std::cout << "Type of operation " << it->type << std::endl;
+                std::cout << "Date of operation " << it->date << std::endl;
+                std::cout << "Amount " << it->amount << std::endl;
+                return true;
+            }
+            else
+            {
+                std::cout << "Sorry for the specified date no transactions " << std::endl;
+                return false;
+            }
+           
+        }
         //TODO: output all transactions of client for specified date
-        return true;
     }
 
     void outputTotalAmountOfMoneyInBank()
