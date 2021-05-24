@@ -15,6 +15,8 @@ public:
     uint8_t     age;
 };
 
+const std::string alphabet{ "0123456789abcdefghijklmnopqrstuvwxyz" };
+
 std::string generateID()
 {
     static bool firstCall = true;
@@ -23,7 +25,7 @@ std::string generateID()
         srand(time(NULL));
         firstCall = false;
     }
-    const std::string alphabet{ "0123456789abcdefghijklmnopqrstuvwxyz" };
+    
     std::string result{ "" };
     for(uint8_t i = 0U; i < 10; ++i)
     {
