@@ -75,14 +75,15 @@ public:
         return true;
     }
 
-    void outputTotalAmountOfMoneyInBank()
+    void addNewClient()
     {
         //TODO: output total amount of money in bank here
     }
 
-    void outputTotalAmountOfClientsInBank()
+    bool removeClient(std::string clientId)
     {
         //TODO: output total amount of clients in bank
+        return true;
     }
 
 private:
