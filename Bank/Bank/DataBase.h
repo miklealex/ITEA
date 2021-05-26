@@ -68,13 +68,19 @@ public:
     {
         auto history = HistoryManager::loadHistoryForClient(clientId);
        
-        for (auto it = history.begin(); it != history.end(); ++it)
+        for (const auto &it : history)
         {
-            std::cout << "Type of operation " << it->type << std::endl;
-            std::cout << "Date of operation " << it->date << std::endl;
-            std::cout << "Amount " << it->amount << std::endl;
+            if (it.type == TransactionType::REFILL)
+            {
+                std::cout << "Type of operation: Refill" << std::endl;
+            }
+            else
+            {
+                std::cout << "Type of operation: Expense" << std::endl;
+            }
+            std::cout << "Date of operation: " << it.date << std::endl;
+            std::cout << "Amount: " << it.amount << std::endl;
         }
-        //TODO: output transaction for client if possible here
         return true;
         
     }
@@ -83,23 +89,26 @@ public:
     {
         auto history = HistoryManager::loadHistoryForClient(clientId);
 
-        for (auto it = history.begin(); it != history.end(); ++it)
+        for (const auto &it : history)
         {
-            if (it->date==date)
+            
+            if (!it.date.compare(0,8,date))//checking the first eight characters from the date string
             {
-                std::cout << "Type of operation " << it->type << std::endl;
-                std::cout << "Date of operation " << it->date << std::endl;
-                std::cout << "Amount " << it->amount << std::endl;
+                if (it.type == TransactionType::REFILL)
+                {
+                    std::cout << "Type of operation: Refill" << std::endl;
+                }
+                else
+                {
+                    std::cout << "Type of operation: Expense" << std::endl;
+                }
+                std::cout << "Date of operation: " << it.date << std::endl;
+                std::cout << "Amount: " << it.amount << std::endl;
                 return true;
-            }
-            else
-            {
-                std::cout << "Sorry for the specified date no transactions " << std::endl;
-                return false;
-            }
-           
+            }         
         }
-        //TODO: output all transactions of client for specified date
+        std::cout << "Sorry for the specified date no transactions " << std::endl;
+        return false;
     }
 
     void outputTotalAmountOfMoneyInBank()
