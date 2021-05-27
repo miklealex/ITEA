@@ -17,7 +17,7 @@ void print_massage()
     std::cout << "12 - Get all transactions of client for specified date\n";
     std::cout << "13 - Get the oldest transaction\n";
     std::cout << "14 - Get clients with the biggest amount of transactions per day\n";
-    std::cout << "q - for exit";
+    std::cout << "q - for exit\n";
 }
 int main()
 {
@@ -31,7 +31,7 @@ int main()
     while (is_worked)
     {
         print_massage();
-        uint32_t option;
+        char option;
         std::string clientid, sex, date;
         uint64_t amount;
         uint8_t age;
@@ -40,10 +40,10 @@ int main()
 
         switch (option)
         {
-        case 1:
+        case '1':
             db.addNewClient();
             break;
-        case 2:
+        case '2':
             std::cout << "Input client ID end press Enter..\n";
             std::cin >> clientid;
 
@@ -54,7 +54,7 @@ int main()
             }
             std::cout << "Client deleted\n";
             break;
-        case 3:
+        case '3':
             std::cout << "Input client ID and amount\n";
             std::cin >> clientid;
             std::cin >> amount;
@@ -65,7 +65,7 @@ int main()
             }
             std::cout << "Balance replenished\n";
             break;
-        case 4:
+        case '4':
             std::cout << "For decrease amount of money for specific client. Enter client id and amount\n";
             std::cin >> clientid;
             std::cin >> amount;
@@ -76,10 +76,10 @@ int main()
             }
             std::cout << "Decrease amount of money\n";
             break;
-        case 5:
+        case '5':
             db.outputTheRichestClients();
             break;
-        case 6:
+        case '6':
             std::cout << "Enter clientid\n";
             std::cin >> clientid;
             db.outputClientInfo(clientid);
@@ -89,31 +89,31 @@ int main()
             std::cin >> age;
             db.outputCLientsOlderThen(age);
             break;
-        case 8:
+        case '8':
             std::cout << "Enter clients specific sex\nmale/female\n";
             std::cin >> sex;
             db.outputAllClientsWithSpecifiedSex(sex);
             break;
-        case 9:
+        case '9':
             db.averageTransactionsPerDay();
             break;
-        case 10:
+        case '10':
             db.transactionWithTheBiggestAmountOfMoney();
             break;
-        case 11:
+        case '11':
             std::cout << "Enter clientid\n";
             std::cin >> clientid;
             db.outputTransactionHistoryForClient(clientid);
             break;
-        case 12:
+        case '12':
             std::cout << "Enter clientid and date(format: YYYYMMDD:HH:MM:SS)\n";
             std::cin >> clientid >> date;
             db.outputTransactionsForSpecifiedDateForClient(clientid, date);
             break;
-        case 13:
+        case '13':
             db.outputTheOldestTransaction();
             break;
-        case 14:
+        case '14':
             db.outputClientsWithTheBiggestAmountOfTransactionsPerDay();
             break;
         case 'q':
