@@ -4,6 +4,8 @@
 #include "HistoryManager.h"
 #include "Client.h"
 #include <map>
+#include <iostream>
+
 
 class DataBase
 {
@@ -62,17 +64,73 @@ public:
         //TODO: look for transaction with the biggest amount of money (output all of them if several)
     }
 
-    bool outputTransactionHistoryForClient(std::string clientId)
+    bool outputTransactionHistoryForClient(std::string clientId)//Tymoshenko Viktor
     {
         auto history = HistoryManager::loadHistoryForClient(clientId);
-        //TODO: output transaction for client if possible here
+
+        if (history.empty())//checking the history of transactions for fullness
+        {
+            std::cout << "Sorry for the transactions history is empty " << std::endl;
+            return false;
+        }
+       
+        for (const auto &it : history)
+        {
+            if (it.type == TransactionType::REFILL)
+            {
+                std::cout << "Type of operation: Refill" << std::endl;
+            }
+            else
+            {
+                std::cout << "Type of operation: Expense" << std::endl;
+            }
+            std::cout << "Date of operation: " << it.date << std::endl;
+            std::cout << "Amount: " << it.amount << std::endl;
+        }
         return true;
+        
     }
 
-    bool outputTransactionsForSpecifiedDateForClient(std::string clientId, std::string date)
-    {
-        //TODO: output all transactions of client for specified date
-        return true;
+    bool outputTransactionsForSpecifiedDateForClient(std::string clientId, std::string date)//Tymoshenko Viktor
+    {   
+        bool checkSpecDataOutput = false;
+        auto history = HistoryManager::loadHistoryForClient(clientId);
+
+        if (history.empty())//checking the history of transactions for fullness
+        {
+            std::cout << "Sorry for the transactions history is empty " << std::endl;
+            return false;
+        }
+
+        for (const auto &it : history)
+        {
+            
+            if (!it.date.compare(0,8,date))//checking the first eight characters from the date string
+            {
+                if (it.type == TransactionType::REFILL)
+                {
+                    std::cout << "Type of operation: Refill" << std::endl;
+                }
+                else
+                {
+                    std::cout << "Type of operation: Expense" << std::endl;
+                }
+                std::cout << "Date of operation: " << it.date << std::endl;
+                std::cout << "Amount: " << it.amount << std::endl;
+                checkSpecDataOutput = true;
+            }         
+        }
+        if (checkSpecDataOutput)
+        {
+            return true;
+        }
+        else
+        {
+            std::cout << "Sorry for the specified date no transactions" << std::endl;
+            return false;
+        }
+       
+       
     }
 
     void addNewClient()
