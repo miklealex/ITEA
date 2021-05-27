@@ -67,6 +67,12 @@ public:
     bool outputTransactionHistoryForClient(std::string clientId)//Tymoshenko Viktor
     {
         auto history = HistoryManager::loadHistoryForClient(clientId);
+
+        if (history.empty())//checking the history of transactions for fullness
+        {
+            std::cout << "Sorry for the transactions history is empty " << std::endl;
+            return false;
+        }
        
         for (const auto &it : history)
         {
@@ -86,8 +92,15 @@ public:
     }
 
     bool outputTransactionsForSpecifiedDateForClient(std::string clientId, std::string date)//Tymoshenko Viktor
-    {
+    {   
+        bool checkSpecDataOutput = false;
         auto history = HistoryManager::loadHistoryForClient(clientId);
+
+        if (history.empty())//checking the history of transactions for fullness
+        {
+            std::cout << "Sorry for the transactions history is empty " << std::endl;
+            return false;
+        }
 
         for (const auto &it : history)
         {
@@ -104,11 +117,20 @@ public:
                 }
                 std::cout << "Date of operation: " << it.date << std::endl;
                 std::cout << "Amount: " << it.amount << std::endl;
-                return true;
+                checkSpecDataOutput = true;
             }         
         }
-        std::cout << "Sorry for the specified date no transactions " << std::endl;
-        return false;
+        if (checkSpecDataOutput)
+        {
+            return true;
+        }
+        else
+        {
+            std::cout << "Sorry for the specified date no transactions" << std::endl;
+            return false;
+        }
+       
+       
     }
 
     void outputTotalAmountOfMoneyInBank()
