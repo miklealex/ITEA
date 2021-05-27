@@ -1,5 +1,6 @@
 #include "DataBase.h"
 #include <iostream>
+
 void print_massage()
 {
     std::cout << "Hello ...\nBank Db greeting you\nPlease, choose one option from below:\n";
@@ -21,11 +22,6 @@ void print_massage()
 }
 int main()
 {
-
-    //TODO: establish the communication with the user.
-    // Program basically should spin in the loop and read user request, behave accordingly to
-    // chosen command, output results, notify about success/failure etc.
-    // User should have possibility to exit the application.
     DataBase db;
     bool is_worked = true;
     while (is_worked)
