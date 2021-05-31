@@ -1,7 +1,7 @@
 #include "DataBase.h"
 #include <iostream>
 
-void print_massage()
+void print_message()
 {
     std::cout << "Hello ...\nBank Db greeting you\nPlease, choose one option from below:\n";
     std::cout << "1 - Add client\n";
@@ -26,7 +26,7 @@ int main()
     bool is_worked = true;
     while (is_worked)
     {
-        print_massage();
+        print_message();
         char option;
         std::string clientid, sex, date;
         uint64_t amount;
