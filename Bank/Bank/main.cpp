@@ -32,8 +32,6 @@ int main()
         uint64_t amount;
         uint8_t age;
         std::cin >> option;
-        
-
         switch (option)
         {
         case '1':
@@ -42,7 +40,6 @@ int main()
         case '2':
             std::cout << "Input client ID end press Enter..\n";
             std::cin >> clientid;
-
             if (!db.removeClient(clientid))
             {
                 std::cout << "Client does not exist\n";
