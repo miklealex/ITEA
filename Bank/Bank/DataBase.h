@@ -67,25 +67,11 @@ public:
             float totalExpence = 0;
             int countRefill = 0;
             int countExpence = 0;
-            time_t t;
-            time(&t);
-            int year = localtime(&t)->tm_year + 1900;
-            int month = localtime(&t)->tm_mon + 1;
-            int day = localtime(&t)->tm_mday;
-            std::string curDate = std::to_string(year);
-            if (month < 10) 
-                curDate += "0";
-            curDate += std::to_string(month);
-            if (day < 10)
-                curDate += "0";
-            curDate += std::to_string(day);
             for (const auto& client : clients)
             {
                 auto history = HistoryManager::loadHistoryForClient(client.second.id);
                 for (const auto& it : history)
                 {
-                    if (it.date.compare(0, 8, curDate) == 0)
-                    {
                         if (it.type == TransactionType::REFILL)
                         {
                             countRefill++;
@@ -96,17 +82,16 @@ public:
                             countExpence++;
                             totalExpence += it.amount;
                         }
-                    }
                 }
             }
             if (countRefill != 0)
                 std::cout << "Average refill transaction per day is: " << totalRefill / countRefill << std::endl;
             else
-                std::cout << "There is no refill transaction this day!" << std::endl;
+                std::cout << "There is no refill transactions!" << std::endl;
             if (countExpence != 0)
                 std::cout << "Average expence transaction per day is: " << totalExpence / countExpence << std::endl;
             else
-                std::cout << "There is no expence transaction this day!" << std::endl;
+                std::cout << "There is no expence transactions!" << std::endl;
         }
         else 
             std::cout << "Database is empty" << std::endl;
@@ -127,7 +112,7 @@ public:
                     if (maxAmount < it.amount)
                     {
                         maxAmount = it.amount;
-                        biggest.resize(0);
+                        biggest.clear();
                     }
                     if (maxAmount == it.amount)
                     {
