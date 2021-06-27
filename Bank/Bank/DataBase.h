@@ -8,7 +8,6 @@
 #include <fstream>
 #include <map>
 #include <iostream>
-#include <time.h>
 
 
 class DataBase
