@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #ifndef _DATABASE_H_
 #define _DATABASE_H_
 
@@ -59,11 +60,77 @@ public:
     void averageTransactionsPerDay()
     {
         //TODO: output average transactions amount per day
+        if (clients.empty() == 0)
+        {
+            float totalRefill = 0;
+            float totalExpence = 0;
+            int countRefill = 0;
+            int countExpence = 0;
+            for (const auto& client : clients)
+            {
+                auto history = HistoryManager::loadHistoryForClient(client.second.id);
+                for (const auto& it : history)
+                {
+                        if (it.type == TransactionType::REFILL)
+                        {
+                            countRefill++;
+                            totalRefill += it.amount;
+                        }
+                        else
+                        {
+                            countExpence++;
+                            totalExpence += it.amount;
+                        }
+                }
+            }
+            if (countRefill != 0)
+                std::cout << "Average refill transaction per day is: " << totalRefill / countRefill << std::endl;
+            else
+                std::cout << "There is no refill transactions!" << std::endl;
+            if (countExpence != 0)
+                std::cout << "Average expence transaction per day is: " << totalExpence / countExpence << std::endl;
+            else
+                std::cout << "There is no expence transactions!" << std::endl;
+        }
+        else 
+            std::cout << "Database is empty" << std::endl;
     }
 
     void transactionWithTheBiggestAmountOfMoney()
     {
         //TODO: look for transaction with the biggest amount of money (output all of them if several)
+        if (clients.empty() == 0)
+        {
+            std::list<Transaction> biggest;
+            float maxAmount = 0;
+            for (const auto& client : clients)
+            {
+                auto history = HistoryManager::loadHistoryForClient(client.second.id);
+                for (const auto& it : history)
+                {
+                    if (maxAmount < it.amount)
+                    {
+                        maxAmount = it.amount;
+                        biggest.clear();
+                    }
+                    if (maxAmount == it.amount)
+                    {
+                        biggest.push_back(it);
+                    }
+                }
+            }
+            if (maxAmount != 0)
+            {
+                std::cout << "Transactions with the biggest amount of money: " << std::endl;
+                for (const auto& it : biggest)
+                {
+                    std::cout << it.date << " " << it.type << " " << it.amount << std::endl;
+                }
+            }
+            else
+                std::cout << "There is no transactions in database!" << std::endl;
+        } else
+            std::cout << "Database is empty" << std::endl;
     }
 
     bool outputTransactionHistoryForClient(std::string clientId)//Tymoshenko Viktor
