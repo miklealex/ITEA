@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#include <iomanip>
 #ifndef _DATABASE_H_
 #define _DATABASE_H_
 
@@ -8,7 +9,8 @@
 #include <fstream>
 #include <map>
 #include <iostream>
-
+#include <chrono>
+#include <sstream>
 
 class DataBase
 {
@@ -25,14 +27,60 @@ public:
 
     bool addCostsForClient(std::string clientId, uint64_t amount)
     {
-        //TODO: increase amount of money for specific client by specified amount (if exists)
+        const auto existingClient = clients.find(clientId);
+        if (existingClient == clients.end())
+        {
+            std::cout << "There is no client with such id. Please, try again.\n";
+            return false;
+        }
+
+        existingClient->second.balance += amount;
+        auto now = std::chrono::system_clock::now();
+        auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+        std::stringstream ss;
+        ss << std::put_time(std::localtime(&in_time_t), "%Y%m%d:%X");
+        HistoryManager::saveTransaction(clientId, Transaction{ TransactionType::REFILL, ss.str(), amount });
         // Create Transaction if possible and call HistoryManager::saveTransaction(clientId);
         return true;
     }
 
+    void listAllClients()
+    {
+        if(clients.empty())
+        {
+            std::cout << "There are no clients records yet. Please, add one.\n";
+            return;
+        }
+
+        for(auto& item : clients)
+        {
+            outputClientInfo(item.first);
+        }
+    }
+
     bool removeCostsFromClient(std::string clientId, uint64_t amount)
     {
-        //TODO: decrease amount of money for specific client (if possible)
+        const auto existingClient = clients.find(clientId);
+        if (existingClient == clients.end())
+        {
+            std::cout << "There is no client with such id. Please, try again.\n";
+            return false;
+        }
+
+        if(existingClient->second.balance < amount)
+        {
+            std::cout << "Not enough funds.\n";
+            return false;
+        }
+
+        existingClient->second.balance -= amount;
+        auto now = std::chrono::system_clock::now();
+        auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+        std::stringstream ss;
+        ss << std::put_time(std::localtime(&in_time_t), "%Y%m%d:%X");
+        HistoryManager::saveTransaction(clientId, Transaction{ TransactionType::EXPENSE, ss.str(), amount });
         return true;
     }
 
@@ -43,7 +91,20 @@ public:
 
     bool outputClientInfo(std::string clientId)
     {
-        //TODO: look for specified client. If found - output all relevant info about it.
+        const auto existingClient = clients.find(clientId);
+        if (existingClient == clients.end())
+        {
+            std::cout << "There is no client with such id. Please, try again.\n";
+            return false;
+        }
+
+        auto& client = existingClient->second;
+        std::cout << "Id:" << client.id << "\n"
+            << client.name << "\n"
+            << client.surname << "\n"
+            << client.sex << "\n"
+            << "Age: " << client.age << "\n"
+            << "Balance: " << client.balance << "\n";
         return true;
     }
 
@@ -204,12 +265,37 @@ public:
 
     void addNewClient()
     {
-        //TODO: output total amount of money in bank here
+        auto newId = generateID();
+        std::string name;
+        std::string surname;
+        std::string sex;
+        uint16_t     age;
+        std::cout << "Please, enter client's name\n";
+        std::cin >> name;
+        std::cout << "Please, enter client's surname\n";
+        std::cin >> surname;
+        std::cout << "Please, enter client's sex (male/female):\n";
+        std::cin >> sex;
+        if(sex != "male" && sex != "female")
+        {
+            sex = "male";
+        }
+        std::cout << "Please, enter client's age\n";
+        std::cin >> age;
+
+        clients.emplace(newId, Client{ newId, name, surname, sex, 0, age });
     }
 
     bool removeClient(std::string clientId)
     {
-        //TODO: output total amount of clients in bank
+        const auto existingClient = clients.find(clientId);
+        if(existingClient == clients.end())
+        {
+            std::cout << "There is no client with such id. Please, try again.\n";
+            return false;
+        }
+
+        clients.erase(clientId);
         return true;
     }
 
@@ -286,7 +372,7 @@ private:
                 updateData << "[balance]   " << pair.second.balance << std::endl;
                 updateData << "[age]       " << pair.second.age << std::endl;
                 updateData << "---------------------------------------------------------------------------" << std::endl;
-            };
+            }
         }
         updateData.close();
     }

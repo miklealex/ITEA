@@ -12,7 +12,7 @@ public:
     std::string surname;
     std::string sex;
     uint64_t    balance;
-    uint8_t     age;
+    uint16_t    age;
 };
 
 const std::string alphabet{ "0123456789abcdefghijklmnopqrstuvwxyz" };
